@@ -13,7 +13,7 @@ CREATE TABLE "user" (
                         updated_by INTEGER
 
 );
-
+ALTER TABLE "user" ADD CONSTRAINT unique_email UNIQUE (email);
 CREATE TABLE role (
                       id SERIAL PRIMARY KEY,
                       name VARCHAR(50) NOT NULL,
@@ -72,8 +72,9 @@ CREATE TABLE product (
                          price DECIMAL(10, 2) NOT NULL,
                          category_id INTEGER NOT NULL,
                          brand_id INTEGER NOT NULL,
-                         image_url VARCHAR(255) NOT NULL,
-                         sale INTEGER NOT NULL CHECK (sale >=0 AND sale <= 100),
+                         supplier_id INTEGER,
+                         image_url VARCHAR(255),
+                         sale INTEGER NOT NULL CHECK (sale >=0 AND sale <= 100) ,
                          created_at TIMESTAMP DEFAULT NOW(),
                          updated_at TIMESTAMP,
                          created_by INTEGER,
@@ -81,7 +82,7 @@ CREATE TABLE product (
                          CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES category(id),
                          CONSTRAINT fk_product_brand FOREIGN KEY (brand_id) REFERENCES brand(id)
 );
-
+ALTER TABLE product ALTER sale SET DEFAULT 0;
 CREATE TABLE product_detail (
                                 id SERIAL PRIMARY KEY,
                                 product_id INTEGER NOT NULL REFERENCES product(id),
