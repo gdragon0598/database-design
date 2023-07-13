@@ -83,6 +83,8 @@ CREATE TABLE product (
                          CONSTRAINT fk_product_brand FOREIGN KEY (brand_id) REFERENCES brand(id)
 );
 ALTER TABLE product ALTER sale SET DEFAULT 0;
+ALTER TABLE product ADD is_new BOOLEAN;
+ALTER TABLE product ADD number_sold_item INTEGER DEFAULT 0;
 CREATE TABLE product_detail (
                                 id SERIAL PRIMARY KEY,
                                 product_id INTEGER NOT NULL REFERENCES product(id),
@@ -93,6 +95,7 @@ CREATE TABLE product_detail (
                                 created_by INTEGER,
                                 updated_by INTEGER
 );
+ALTER TABLE product_detail ADD CONSTRAINT Uidx_ProductID UNIQUE(product_id)
 
 CREATE TABLE product_image (
                                id SERIAL PRIMARY KEY,
@@ -115,6 +118,7 @@ CREATE TABLE comment (
                          created_by INTEGER,
                          updated_by INTEGER
 );
+ALTER TABLE comment ADD CONSTRAINT Uidx_ProductID_UserID UNIQUE(product_id, user_id);
 
 CREATE TABLE "order" (
                          id SERIAL PRIMARY KEY,
@@ -139,6 +143,7 @@ CREATE TABLE order_detail (
                               created_by INTEGER,
                               updated_by INTEGER
 );
+ALTER TABLE order_detail ADD CONSTRAINT Uidx_OrderID_ProductID UNIQUE (order_id, product_id);
 
 CREATE TABLE address (
                          id SERIAL PRIMARY KEY,
